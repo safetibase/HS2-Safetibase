@@ -17,8 +17,8 @@ cdmdata = {
             .done(function(data) {
                 
                 var f = data.d.results;
-                ////console.log('entry',data);
-                ////console.log("done1","red",flst);
+                //console.log('entry',data);
+                //console.log("done1","red",flst);
                 for (var cc = 0; cc < f.length; cc++) {
                     var fld = f[cc];
                     var fldTitle = fld.Title;
@@ -41,7 +41,7 @@ cdmdata = {
                 ft.push(1);
             })
             .done(function() {
-                ////console.log("done2");
+                //console.log("done2");
                 var od = "OData_";
                 for (var i = 0; i < fa.length; i++) {
                     var ti = fa[i];
@@ -77,7 +77,7 @@ cdmdata = {
                     
                     filter: filter // 'OData__user/Id eq \'' + i + '\''
                 }).done(function(data) {
-                    ////console.log(data,'dataa',format);
+                    //console.log(data,'dataa',format);
 
                   if (format == "hazards-table") {
                     var appurl = _spPageContextInfo.webAbsoluteUrl;
@@ -95,7 +95,7 @@ cdmdata = {
                     } else order = '';
                     var limit = '&$top=2000';
                     
-                    ////console.log(limit,'limit');
+                    //console.log(limit,'limit');
                     var url = appurl + "/_api/web/lists/getByTitle(%27" + lst + "%27)/items" + select + filter + expand + order + limit
                     async function GetListItems() {
                         $.ajax({
@@ -106,7 +106,7 @@ cdmdata = {
                             },
                             success: function(data) {
                                 var response = data.d.results;
-                                ////console.log(response);
+                                //console.log(response);
                                 if (data.d.__next) {
                                     callbackMain(response, data.d.__next)
                                 } else {
@@ -114,7 +114,7 @@ cdmdata = {
                                 }
                             },
                             error: function(error) {
-                                ////console.log(error);
+                                //console.log(error);
                             }
                         });
                     }
@@ -180,9 +180,6 @@ cdmdata = {
             if (format == "frmsel_utag") {
                 tposSelectUniclass(lst, data, trg);
             }
-            if(format=="frmsel_assigneduser"){
-                tposSelectdropdown(lst, data, trg,"cdmAssignedUser");
-            }
             // if (format == "frmsel_asset") { 
             //     tposSelectfilter(lst, data, trg,"asset");
             // }
@@ -194,7 +191,7 @@ cdmdata = {
             // }
             if (format == "frmsel_customfilters") {
                 //var flst = getDistResults(lst,"cdmStageHS2");
-                ////console.log(data.length,"length");
+                //console.log(data.length,"length");
                 //tposcustomfilters(lst, data, trg,"cdmStageHS2.Title");
                 formatdatato.filterrowsdata(data, ftv, trg,flst);
             }
@@ -204,12 +201,12 @@ cdmdata = {
             //     tposSelectfilter(lst, data, trg,"roles");
             // }
             // if (format == "frmsel_UAID") {
-            //     ////console.log("list",data.d.results[0].cdmDescription);
+            //     //console.log("list",data.d.results[0].cdmDescription);
             //      var tdata=[];
             //      var txt = data.d.results[0].cdmDescription;
             //      tdata.push("UAID|"+ txt);
             //      tdata.push("cdmCurrentStatus|Assessment in progress");
-            //      ////console.log(tdata);
+            //      //console.log(tdata);
             //      cdmdata.update("cdmHazards", tdata, "frmedit_updateview");
 
                  
@@ -266,7 +263,7 @@ cdmdata = {
         }
     },
     update: function(lst, data, callback) {
-        ////console.log("Running Update Function")
+        //console.log("Running Update Function")
         var ml = list(lst);
         var itemCreateInfo = new SP.ListItemCreationInformation();
         var oListItem = ml.getItemById(hzd);
@@ -308,50 +305,29 @@ cdmdata = {
                 "frmedit_updateview",null,[]
             );
         }
-    },
-    reject: function(lst, data, rejectionReason, rejectionFeedback, callback) {
-        ////console.log("Running Update Function")
-        var ml = list(lst);
-        var itemCreateInfo = new SP.ListItemCreationInformation();
-        var oListItem = ml.getItemById(hzd);
-
-        var hl = list("cdmHazardHistory");
-        var hitemCreateInfo = new SP.ListItemCreationInformation();
-        var hListItem = hl.addItem(hitemCreateInfo);
-        var hfields = ["Title", "cdmHazard", "cdmAction"];
-        var hdata = [];
-
-        for (var cc = 0; cc < data.length; cc++) {
-            if (data[cc] != "") {
-                var t = data[cc].toString().split("|");
-                var f = t[0];
-                var v = t[1];
-                oListItem.set_item(f, v);
-                hdata.push("field " + f + " to value " + v);
-            }
-        }
-        hListItem.set_item("Title", "updated");
-        hListItem.set_item("cdmHazard", hzd);
-        hListItem.set_item("cdmAction", `Rejected by HS2. ${hdata.toString()}. Rejection Reason: "${rejectionReason}". Rejection Feedback: "${rejectionFeedback}".`);
-
-        oListItem.update();
-        hListItem.update();
-
-        ctx().load(oListItem);
-        ctx().executeQueryAsync();
-        if (callback == "sync") {
-            toastr.success(`Synced ${data.length} hazards`, {positionClass: "toast-top-right"});
-        }
-        if (callback == "frmedit_updateview") {
-            // var fn = window[callback];
-            // fn(oListItem);
-            cdmdata.get(
-                "cdmHazards",
-                "ID eq '" + hzd + "'",
-                null,
-                "frmedit_updateview",null,[]
-            );
-        }
+        //// Below returns errors and so doesn't refresh page when it should. Resource throttling.
+        //// Patch above refreshes page regardless of whether the executeQueryAsync() works.
+        
+        // ctx().executeQueryAsync(
+        //     function() {
+        //         // toastr.success('item saved');
+        //         if (callback == "frmedit_updateview") {
+        //             // var fn = window[callback];
+        //             // fn(oListItem);
+        //             cdmdata.get(
+        //                 "cdmHazards",
+        //                 "ID eq '" + hzd + "'",
+        //                 null,
+        //                 "frmedit_updateview"
+        //             );
+        //         }
+        //     },
+        //     function(request, error) {
+        //         //console.log(`Error:`);
+        //         //console.log(error);
+        //         toastr.warning("something went wrong");
+        //     }
+        // );
     },
 
     getCount: function(lst, title, clr, callback) {
@@ -366,7 +342,7 @@ cdmdata = {
                 $("#mainArea").append(ui.mkDataBox(itemsCount, "Hazards on system"));
             })
             .fail(function(error) {
-                ////console.log(JSON.stringify(error));
+                //console.log(JSON.stringify(error));
             });
     },
     getQuickCount: function(lst, n, filter, title, trg, clr, size) {
@@ -416,7 +392,7 @@ cdmdata = {
                     }
                 },
                 error: function(error) {
-                    ////console.log(error);
+                    //console.log(error);
                 }
             });
         }
@@ -434,7 +410,6 @@ cdmdata = {
                 // On click function for dashboard boxes
                 $("#" + lst + "_databox_" + n).click(function() {
                     $("#tpos-main").html("");
-                    
                     $(".dataset").removeClass("active");
                     $("#stats").remove();
                     $("#systemstats").remove();
@@ -459,7 +434,7 @@ cdmdata = {
         }
     },
     createDashboardBoxes(filtered_hazards, lst, box_count, title, trg, clr, size) {
-        ////console.log("filtered_hazards",filtered_hazards);
+        //console.log("filtered_hazards",filtered_hazards);
         var itemsCount = filtered_hazards.length;
         if (itemsCount >= 0) {
             if (itemsCount == 0) {
@@ -471,7 +446,6 @@ cdmdata = {
             // On click function for dashboard boxes
             $("#" + lst + "_databox_" + box_count).click(function() {
                 $("#tpos-main").html("");
-                
                 $(".dataset").removeClass("active");
                 $("#stats").remove();
                 $("#systemstats").remove();
@@ -484,29 +458,11 @@ cdmdata = {
                     );
                     formatdatato.cachedhazardtablerows(filtered_hazards, 0)
                 }
-            });
-            $("#" + lst + "_databox_" + box_count).keypress(function(e) {
-               if(e.which ==13){
-                $("#tpos-main").html("");
-                
-                $(".dataset").removeClass("active");
-                $("#stats").remove();
-                $("#systemstats").remove();
-                $("#userstats").remove();
-                if ((lst = "cdmHazards")) {
-                    $("#tpos-main").html(
-                        '<div class="tpos-area-title">' +
-                        title +
-                        '</div><div id="hazardstable" class="tpos-area-content"></div>'
-                    );
-                    formatdatato.cachedhazardtablerows(filtered_hazards, 0)
-                }
-               }
             });
         }
     },
     getQuickCountNoZeroes: function(lst, n, filter, title, trg, clr, size, bt) {
-        ////console.log("getQuickCountNoZeroes");
+        //console.log("getQuickCountNoZeroes");
         var select = "";
         var expand = ""; 
         if (filter || filter != "") {
@@ -544,7 +500,7 @@ cdmdata = {
                     }
                 },
                 error: function(error) {
-                    ////console.log(error);
+                    //console.log(error);
                 }
             });
         }
@@ -571,7 +527,6 @@ cdmdata = {
                 $("#" + lst + "_databox_" + n).click(function() {
                     // if itemscount > 100 attempt further filters
                     // if itemscount < 100
-                    
                     $("#tpos-main").html("");
                     $(".dataset").removeClass("active");
                     $("#stats").remove();
@@ -640,8 +595,8 @@ tposdata = {
 
                 fa.push("ID");
                 ft.push(1);
-                // ////console.log(fa);
-                // ////console.log(ft);
+                // //console.log(fa);
+                // //console.log(ft);
             })
             .done(function() {
                 var od = "OData_";
@@ -665,10 +620,10 @@ tposdata = {
                         ftv.push(ti + ".ID");
                     }
                 }
-                // ////console.log(select);
+                // //console.log(select);
                 expand = expand.substring(0, expand.length - 1);
-                // ////console.log(expand);
-                // ////console.log(ftv);
+                // //console.log(expand);
+                // //console.log(ftv);
             })
             .done(function() {
                 getListItemsByListName({
@@ -723,7 +678,7 @@ tposdata = {
                                     }
                                 },
                                 error: function(error) {
-                                    ////console.log(error);
+                                    //console.log(error);
                                 }
                             });
                         }
@@ -872,7 +827,7 @@ tposdata = {
                 $("#mainArea").append(ui.mkDataBox(itemsCount, "Hazards on system"));
             })
             .fail(function(error) {
-                ////console.log(JSON.stringify(error));
+                //console.log(JSON.stringify(error));
             });
     },
     getQuickCount: function(lst, n, filter, title, trg, clr, size) {
@@ -903,7 +858,6 @@ tposdata = {
                 }
                 $("#" + trg).append(t);
                 $("#" + lst + "_databox_" + n).click(function() {
-                    
                     $("#mainTitle").html(title);
                     $("#mainArea").html("");
                     tposdata.get(lst, filter, "Modified desc", "mkHazardList");
@@ -939,7 +893,6 @@ tposdata = {
                 }
                 $("#" + trg).append(t);
                 $("#" + lst + "_databox_" + n).click(function() {
-                    
                     $("#mainTitle").html(title);
                     $("#mainArea").html("");
                     tposdata.get(lst, filter, "Modified desc", "mkHazardList");
@@ -1018,7 +971,7 @@ jsondata = {
                 if (st) {
                     $("tr:not(:contains(" + st + "))").each(function() {
                         var t = $(this).html();
-                        //////console.log(t);
+                        ////console.log(t);
                         if ($(this).hasClass("tpos-" + lst + "-select-value") == 1) {
                             $(this).hide();
                         }
@@ -1039,11 +992,7 @@ jsondata = {
                 if (!st || st == "") {
                     $("tr").each(function() {
                         if ($(this).hasClass("tpos-" + lst + "-select-value") == 1) {
-                            if ($(this).is(":visible")) {
-                                $(this).hide();
-                            } else {
-                                $(this).show();
-                            }
+                            $(this).show();
                         }
                     });
                 }
@@ -1144,7 +1093,7 @@ jsonRAMS = {
                 if (st) {
                     $("tr:not(:contains(" + st + "))").each(function() {
                         var t = $(this).html();
-                        //////console.log(t);
+                        ////console.log(t);
                         if ($(this).hasClass("tpos-" + lst + "-select-value") == 1) {
                             $(this).hide();
                         }
@@ -1207,7 +1156,7 @@ jsonImport = {
             $("#div_" + trg).hide();
             $("#div_" + trg).html("");
 
-            var srccolumns = ["Worksite", "DNI", "DNI Reason", "Amended", "Amend Details", "Design Type", "Design House", "Hazard Record No", "Pre-Existing No", "Element", "Temporary Works Number", "Temporary Works Design", "Activity", "Occurrence of Hazard", "Hazard Description", "Risk", "Initial Likelihood", "Initial Consequence", "Initial Index", "IRN", "Design Mitigation", "Residual Likelihood", "Residual Consequence", "Residual Index", "RRN", "Refer to Design Document", "For Option Evaluation", "For Mitigation and Control", "Suggested Mitigation", "Detail of Impact", "Additional Design Detail", "MML Response", "Designer Discussion Date", "Construction Review Comments", "Residual Hazard Passed to Operator", "HazardTriangle", "Construction Team Mitigation", "RAMS No", "RAGEmail", "Harmed", "EmailTo", "EmailCC", "Additional Design Work Required", "Associated Hazard", "Child Hazard", "Created", "Created By", "Design", "Design Mitigation Owner", "MitigatedBy", "Modified", "New RAG Item", "On the RAG list?", "Other Works Impact", "Project Phase", "Residual Hazard", "Residual Risk Owner", "RHS", "rTitle", "Should it be on the RAG", "Status", "Temporary Works Description", "App Created By", "App Modified By", "Assigned To", "Construction Review By", "Construction Review Date", "Construction Review No", "Construction Team Reviewed", "Content Type", "Date Action Taken", "DRR - Create Tasks", "Flagged for Removal", "Folder Child Count", "ID", "Item Child Count", "Lead Designer Review By", "Lead Designer Review Comments", "Lead Designer Review Date", "Lead Designer Review No", "Lead Designer Reviewed", "Locked", "Lockedby", "Manager Review By", "Manager Review Comments", "Manager Review Date", "Manager Review No", "Manager Reviewed", "Mitigation Approved By", "Mitigation Checked By", "Modified By", "OriginCode", "OriginID", "OriginList", "Peer Review By", "Peer Review Comments", "Peer Review Date", "Peer Review Number", "Peer Reviewed", "PR Link", "ProjectStage", "Target Date", "Task Created", "Task Updated", "TempConcat", "Title", "Ready For Construction", "RAG Email Sent", "Mitigate - Email RAG", "Reset Reviews"];
+            var srccolumns = ["Worksite", "DNI", "DNI Reason", "Amended", "Amend Details", "Design Type", "Design House", "Hazard Record No", "Pre-Existing No", "Element", "Temporary Works Number", "Temporary Works Design", "Activity", "Occurrence of Hazard", "Hazard Description", "Risk", "Initial Likelihood", "Initial Consequence", "Initial Index", "IRN", "Design Mitigation", "Residual Likelihood", "Residual Consequence", "Residual Index", "RRN", "Refer to Design Document", "For Option Evaluation", "For Mitigation and Control", "Suggested Mitigation", "Detail of Impact", "Additional Design Detail", "MML Response", "Designer Discussion Date", "Construction Review Comments", "Residual Hazard Passed to Operator", "HazardTriangle", "Construction Team Mitigation", "RAMS No", "RAGEmail", "Harmed", "EmailTo", "EmailCC", "Additional Design Work Required", "Associated Hazard", "Child Hazard", "Created", "Created By", "Design", "Design Mitigation Owner", "MitigatedBy", "Modified", "New RAG Item", "On the RAG list?", "Other Works Impact", "Project Phase", "Residual Hazard", "Residual Risk Owner", "RHS", "rTitle", "Should it be on the RAG", "Status", "Temporary Works Description", "App Created By", "App Modified By", "Assigned To", "Construction Review By", "Construction Review Date", "Construction Review No", "Construction Team Reviewed", "Content Type", "Date Action Taken", "DRR - Create Tasks", "Flagged for Removal", "Folder Child Count", "ID", "Item Child Count", "Principal Designer Review By", "Principal Designer Review Comments", "Principal Designer Review Date", "Principal Designer Review No", "Principal Designer Reviewed", "Locked", "Lockedby", "Manager Review By", "Manager Review Comments", "Manager Review Date", "Manager Review No", "Manager Reviewed", "Mitigation Approved By", "Mitigation Checked By", "Modified By", "OriginCode", "OriginID", "OriginList", "Peer Review By", "Peer Review Comments", "Peer Review Date", "Peer Review Number", "Peer Reviewed", "PR Link", "ProjectStage", "Target Date", "Task Created", "Task Updated", "TempConcat", "Title", "Ready For Construction", "RAG Email Sent", "Mitigate - Email RAG", "Reset Reviews"];
             var trgcolumns = ["ID", "Title", "cdmHazardDescription", "cdmSite", "cdmPWStructure", "cdmTW", "cdmRAMS", "cdmStageHS2", "cdmHazardOwner", "cdmRiskDescription", "cdmMitigationDescription", "cdmResidualRiskScore", "cdmLastReviewType", "cdmLastReviewDate", "cdmLastReviewSnapshot", "cdmLastReviewer", "cdmStageMitigationSuggestion", "cdmLastReviewStatus", "cdmHazardType", "cdmInitialRiskScore", "cdmInitialRAG", "cdmResidualRAG", "cdmHazardCoordinates", "cdmSMMitigationSuggestion", "cdmHazardTags", "cdmPWElement", "Modified By", "cdmEntityTitle", "cdmRelatedRAMS", "cdmParent", "cdmRAGSuggestion", "cdmUniclass", "cdmLinks", "cdmCurrentStatus", "cdmInitialRisk", "cdmResidualRisk", "cdmReviews", "cdmIniRisk", "cdmResRisk", "CurrentMitigationOwner", "cdmSiblings", "CurrentReviewOwner", "cdmFamily", "cdmLegacyId", "Item Type", "Path"];
 
             // var options =
@@ -1272,7 +1221,7 @@ jsonImport = {
                 if (st) {
                     $("tr:not(:contains(" + st + "))").each(function() {
                         var t = $(this).html();
-                        //////console.log(t);
+                        ////console.log(t);
                         if ($(this).hasClass("tpos-" + lst + "-select-value") == 1) {
                             $(this).hide();
                         }
@@ -1373,7 +1322,7 @@ function xtrafilter(lst, flt, title) {
 }
 
 function filterBy(filter, title, clr) {
-    ////console.log('extra filter initiated: ' + filter);
+    //console.log('extra filter initiated: ' + filter);
     $("#tpos-main").html("");
     $(".dataset").removeClass("active");
     $("#stats").remove();
@@ -1410,7 +1359,7 @@ function initiateQuickCount(data, wpt) {
     var filter = wptv[0];
     var title = wptv[1];
     var clr = wptv[2];
-    ////console.log(tcnt + ' elements found');
+    //console.log(tcnt + ' elements found');
     for (var i = 0; i < tcnt; i++) {
         var it = tlist[i];
         var t = i.Title;
@@ -1438,4 +1387,4 @@ function initiateQuickCount(data, wpt) {
 
     });
 
-} 
+}

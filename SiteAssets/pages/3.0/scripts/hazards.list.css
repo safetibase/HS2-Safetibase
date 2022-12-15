@@ -395,14 +395,3 @@
 .customfiltersection{
   width:  75%;
 }
-
-.borderboxing
-{
-  border : 0.5px solid;
-  min-height: 20px;
-}
-
-.logocolor{
-  background-color: gray;
-  padding: 8px 2px 8px 2px;
-}

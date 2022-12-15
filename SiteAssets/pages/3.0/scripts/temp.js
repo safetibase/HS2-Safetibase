@@ -320,7 +320,7 @@ function hzdreviewbuttonaction() {
                                             nl = nl + hist;
                                         }
                                         // tdata.push("cdmReviews|" + nl);
-                                        // tdata.push("cdmCurrentStatus|Under lead designer review");
+                                        // tdata.push("cdmCurrentStatus|Under principal designer review");
                                         // tdata.push("cdmLastReviewDate|" + ind);
                                         // tdata.push(
                                         //     "cdmLastReviewStatus|Pre-construction review completed"
@@ -334,7 +334,7 @@ function hzdreviewbuttonaction() {
                                         if (ns === true) {
                                             tdata.push("cdmReviews|" + nl);
                                             tdata.push(
-                                                "cdmCurrentStatus|Under lead designer review"
+                                                "cdmCurrentStatus|Under principal designer review"
                                             );
                                             tdata.push("cdmLastReviewDate|" + ind);
                                             tdata.push(
@@ -438,7 +438,7 @@ function hzdreviewbuttonaction() {
                 }
 
                 if (a == "ldreview") {
-                    gimmepops("Undertake the lead designer review", "");
+                    gimmepops("Undertake the principal designer review", "");
                     $(".pops-content").load(
                         "../3.0/html/internal.design.review.form.html",
                         function() {
@@ -494,7 +494,7 @@ function hzdreviewbuttonaction() {
                                             "]" +
                                             user +
                                             "]" +
-                                            "completed lead designer review]" +
+                                            "completed principal designer review]" +
                                             cmt +
                                             "^";
                                         hist = $("#h_" + hzd + "_cdmReviews").html();
@@ -508,7 +508,7 @@ function hzdreviewbuttonaction() {
                                         tdata.push("cdmReviews|" + nl);
                                         tdata.push("cdmLastReviewDate|" + ind);
                                         tdata.push(
-                                            "cdmLastReviewStatus|Lead designer review completed"
+                                            "cdmLastReviewStatus|Principal designer review completed"
                                         );
                                         tdata.push("cdmLastReviewer|" + unm());
                                         cdmdata.update("cdmHazards", tdata, "frmedit_updateview");

@@ -228,14 +228,14 @@ onblur="WaterMarkmitigation(this, event);" onfocus="WaterMarkmitigation(this, ev
 
 </div> -->
 
-<div class="tpos-info">Then select a site. Please note that you can only select one site at a time.</div>
+<div class="tpos-info">Then select a sublot. Please note that you can only select one sublot at a time.</div>
 
 
 <div class="select-panel" id="sites">
-    <div class="tpos-lbl">Select a site</div>
+    <div class="tpos-lbl">Select a sublot</div>
     <div class="tpos-select" id="div_sel_sites"></div>
     <div>
-        <input class="hide" type="text" name="" id="sctSite" value="0" placeholder="Select a site" />
+        <input class="hide" type="text" name="" id="sctSite" value="0" placeholder="Select a sublot" />
     </div>
 </div>
 
@@ -262,11 +262,11 @@ onblur="WaterMarkmitigation(this, event);" onfocus="WaterMarkmitigation(this, ev
 </div>
 
 <div class="selectnext">
-    <div class="tpos-info">If you wish to record the same hazard for assets, temporary works and/or RAMS for another site, you can select a new site be clicking the site search box. Selecting another site will empty all previously selected options and provide new site
+    <div class="tpos-info">If you wish to record the same hazard for assets, temporary works and/or RAMS for another sublot, you can select a new sublot be clicking the sublots search box. Selecting another sublot will empty all previously selected options and provide new sublot
         relevant options.</div>
 
     <div class="selection-panel" id="selection_panel">
-        <div class="tpos-lbl">Selected site</div>
+        <div class="tpos-lbl">Selected sublot</div>
         <div id="selectedsite" class="tpos-selection"></div>
         <div id="pwstructurespanel">
             <div id="selectedstructures" class="tpos-selection"></div>
@@ -498,9 +498,12 @@ onblur="WaterMarkmitigation(this, event);" onfocus="WaterMarkmitigation(this, ev
 
 
     }
-    var defaultTexthazard = "Please enter a description of the hazard.  We strongly recommend that the potential ‘harm’ is clearly identified.​";
-    var defaultTextrisk = "Use this box to explain your scoring of the initial and residual risks if required.​";
-    var defaultTextmitigation = "Identify the changes that you are making to the design to eliminate or reduce this hazard.​";
+    var defaultTextrisk = "The Risk involved in not finding a solution for the hazard needs to be entered here"
+    +"\n(e.g. Overstressing of dividing wall and dowelled connection to the shaft segmental lining)​";
+    var defaultTexthazard = "Hazard detail and description is entered over here"
+    +"\n(e.g. Document Number - Dividing Wall Arrangement of cover slab different to that assumed in design)​";
+    var defaultTextmitigation = "How the Risk can be mitigated needs to be summarised here"
+    +"\n(e.g. ensure the cover slab does not transfer loads to the dividing wall as assumed)​";
  
     document.getElementById("cdmHazardDescription").value = defaultTexthazard;
     document.getElementById("cdmRiskDescription").value = defaultTextrisk;
@@ -727,9 +730,9 @@ onblur="WaterMarkmitigation(this, event);" onfocus="WaterMarkmitigation(this, ev
 </script><html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"><head>
 <!--[if gte mso 9]><xml>
 <mso:CustomDocumentProperties>
-<mso:_dlc_DocId msdt:dt="string">5555552-1048594010-1464</mso:_dlc_DocId>
-<mso:_dlc_DocIdItemGuid msdt:dt="string">8569a610-16b1-4857-9828-e53f95afd8d8</mso:_dlc_DocIdItemGuid>
-<mso:_dlc_DocIdUrl msdt:dt="string">https://mottmac.sharepoint.com/teams/pj-a814/gs-HS2devbbv/_layouts/15/DocIdRedir.aspx?ID=5555552-1048594010-1464, 5555552-1048594010-1464</mso:_dlc_DocIdUrl>
+<mso:_dlc_DocId msdt:dt="string">100105211-1280576298-188</mso:_dlc_DocId>
+<mso:_dlc_DocIdItemGuid msdt:dt="string">c22f2133-68f0-414d-ae78-d69bc88add4f</mso:_dlc_DocIdItemGuid>
+<mso:_dlc_DocIdUrl msdt:dt="string">https://mottmac.sharepoint.com/teams/pj-f6849/ps-sbHS2testb/_layouts/15/DocIdRedir.aspx?ID=100105211-1280576298-188, 100105211-1280576298-188</mso:_dlc_DocIdUrl>
 </mso:CustomDocumentProperties>
 </xml><![endif]-->
 </head>
